@@ -129,6 +129,7 @@ main::-webkit-scrollbar {
 
 .sideTitle {
   writing-mode: vertical-rl;
+  align-self: flex-start;
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -446,6 +447,7 @@ main::-webkit-scrollbar {
 
   .sideTitle {
     writing-mode: horizontal-tb;
+    align-self: center;
     border-left: none;
     border-bottom: 2px solid var(--primary);
     padding: 0 4px 12px;
