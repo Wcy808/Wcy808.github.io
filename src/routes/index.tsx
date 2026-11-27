@@ -63,12 +63,12 @@ function Portfolio() {
           </div>
         </article>
 
-        <SectionHead index="01" title={t.sections.projects} sub={t.sections.projectsSub} />
+        <SectionHead id="projects" index="01" title={t.sections.projects} sub={t.sections.projectsSub} />
         {projects.map((p) => (
           <ProjectArticle key={p.id} project={p} lang={lang} />
         ))}
 
-        <SectionHead index="02" title={t.sections.about} />
+        <SectionHead id="about" index="02" title={t.sections.about} />
         <Reveal className="article prose">
           <p>{t.about.p1}</p>
           <p>{t.about.p2}</p>
@@ -80,7 +80,7 @@ function Portfolio() {
           ))}
         </Reveal>
 
-        <SectionHead index="03" title={t.sections.contact} />
+        <SectionHead id="contact" index="03" title={t.sections.contact} />
         <Reveal className="article prose">
           <p>{t.contact.text}</p>
           <div className="articleLinks">
@@ -187,9 +187,9 @@ function Reveal({ children, className }: { children: ReactNode; className?: stri
   );
 }
 
-function SectionHead({ index, title, sub }: { index: string; title: string; sub?: string }) {
+function SectionHead({ id, index, title, sub }: { id: string; index: string; title: string; sub?: string }) {
   return (
-    <div className="sectionHead">
+    <div className="sectionHead" id={id}>
       <span className="sectionIndex">{index}</span>
       <h2 className="sectionTitle">{title}</h2>
       {sub && <p className="sectionSub">{sub}</p>}
