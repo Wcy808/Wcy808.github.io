@@ -17,13 +17,13 @@ export function SideShell({ children }: { children: ReactNode }) {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  const ink = dark ? "#ffffff" : "#2e405b";
+  const ink = dark ? "#ffffff" : "#94a3b8";
 
   return (
     <>
       <CursorGrid
         className="bgCursorGrid"
-        cellSize={60}
+        cellSize={36}
         color={ink}
         gridColor={ink}
         highlight="area"
@@ -32,8 +32,9 @@ export function SideShell({ children }: { children: ReactNode }) {
         holdTime={400}
         fadeDuration={800}
         fillOpacity={0.06}
-        gridOpacity={0.08}
-        spotlight={0.6}
+        gridOpacity={0.06}
+        maxOpacity={0.4}
+        spotlight={0.3}
         clickPulse
       />
       <div className="page">
