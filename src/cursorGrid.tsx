@@ -317,8 +317,9 @@ const CursorGrid = ({
       const resized = cols !== grid.cols || rows !== grid.rows || size !== view.cellSize;
       grid.cols = cols;
       grid.rows = rows;
-      grid.offX = (view.width - cols * size) / 2;
-      grid.offY = (view.height - rows * size) / 2;
+      // ACT: anchor grid to container origin so content rules can snap onto grid lines
+      grid.offX = 0;
+      grid.offY = 0;
       view.cellSize = size;
       if (resized) {
         levels = new Float32Array(cols * rows);

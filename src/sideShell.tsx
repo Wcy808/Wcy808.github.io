@@ -17,6 +17,28 @@ export function SideShell({ children }: { children: ReactNode }) {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  // snap section rules and article separators onto the 36px background grid lines
+  useEffect(() => {
+    const align = () => {
+      const main = document.querySelector("main");
+      if (!main) return;
+      const mainTop = main.getBoundingClientRect().top + window.scrollY;
+      main.querySelectorAll<HTMLElement>(".sectionHead, .article").forEach((el) => {
+        const isHead = el.classList.contains("sectionHead");
+        const lineY = mainTop + el.offsetTop + (isHead ? 0 : el.offsetHeight);
+        const target = isHead
+          ? Math.round((lineY + 1) / 36) * 36 - 1
+          : Math.round((lineY - 0.5) / 36) * 36 + 0.5;
+        const style = getComputedStyle(el);
+        if (isHead) el.style.marginTop = `${parseFloat(style.marginTop) + target - lineY}px`;
+        else el.style.paddingBottom = `${parseFloat(style.paddingBottom) + target - lineY}px`;
+      });
+    };
+    align();
+    window.addEventListener("resize", align);
+    return () => window.removeEventListener("resize", align);
+  }, [lang]);
+
   const ink = dark ? "#ffffff" : "#94a3b8";
 
   return (
