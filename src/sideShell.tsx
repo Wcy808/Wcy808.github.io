@@ -73,8 +73,10 @@ export function SideShell({ children }: { children: ReactNode }) {
       />
       <header className="side">
         <Link className="sideTitle" to="/">
-          <span className="sideSub">{profile.name}</span>
-          <h1>{lang === "zh" ? "个人作品集" : "Portfolio"}</h1>
+          <span className="sideTitleGroup">
+            <span className="sideSub">{profile.name}</span>
+            <h1>{lang === "zh" ? "个人作品集" : "Portfolio"}</h1>
+          </span>
         </Link>
         <div className="sideBottom">
           <nav className="sideNav">
