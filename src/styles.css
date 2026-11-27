@@ -124,6 +124,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 22px;
+  padding-left: 18px;
 }
 
 .sideFooter {
@@ -132,7 +133,12 @@ main {
   gap: 2px;
   font-family: var(--ui);
   font-size: 12px;
+  line-height: 1.6;
   color: var(--textDim);
+}
+
+.sideFooter p {
+  margin: 0;
 }
 
 .sideFooter a:hover {
@@ -145,8 +151,8 @@ main {
 .sideTitle {
   writing-mode: vertical-rl;
   align-self: flex-start;
-  align-items: flex-end;
-  width: 108px;
+  align-items: center;
+  width: 109px;
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -498,6 +504,7 @@ main {
   .sideBottom {
     align-items: center;
     gap: 16px;
+    padding-left: 0;
   }
 
   .sideFooter {
