@@ -130,6 +130,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  padding-left: 4px;
   font-family: var(--ui);
   font-size: 12px;
   line-height: 1.6;
@@ -206,9 +207,16 @@ main {
 }
 
 .sideNav ul a {
-  display: inline-block;
-  min-width: 36px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 36px;
+  white-space: nowrap;
+}
+
+html[lang="en"] .sideNav ul a {
+  justify-content: flex-start;
+  width: auto;
+  padding-left: 4px;
 }
 
 .sideNav ul a:hover {
@@ -221,6 +229,7 @@ main {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding-left: 4px;
 }
 
 .sideSocial a {
@@ -519,6 +528,11 @@ main {
   .sideBottom {
     align-items: center;
     gap: 16px;
+    padding-left: 0;
+  }
+
+  .sideSocial,
+  .sideFooter {
     padding-left: 0;
   }
 
