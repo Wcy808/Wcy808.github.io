@@ -54,6 +54,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* interactive grid replaces the static paper grid once WebGL is up */
+body:has(.cursor-grid[data-ready]) {
+  background-image: none;
+  background-size: auto;
+}
+
+.cursor-grid.bgCursorGrid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
 ::selection {
   background: var(--primary);
   color: var(--background);
@@ -67,6 +79,8 @@ a {
 /* ===== layout: main 3fr / side 1fr ===== */
 
 .page {
+  position: relative;
+  z-index: 1;
   max-width: 1200px;
   height: 100vh;
   margin: 0 auto;

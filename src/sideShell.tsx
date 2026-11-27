@@ -1,14 +1,42 @@
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { profile, ui } from "./content";
 import { useLang } from "./langContext";
+import CursorGrid from "./cursorGrid";
 
 export function SideShell({ children }: { children: ReactNode }) {
   const { lang, toggle } = useLang();
   const t = ui[lang];
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    setDark(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setDark(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  const ink = dark ? "#ffffff" : "#2e405b";
 
   return (
-    <div className="page">
+    <>
+      <CursorGrid
+        className="bgCursorGrid"
+        cellSize={60}
+        color={ink}
+        gridColor={ink}
+        highlight="area"
+        gridStyle="lines"
+        radius={140}
+        holdTime={400}
+        fadeDuration={800}
+        fillOpacity={0.06}
+        gridOpacity={0.08}
+        spotlight={0.6}
+        clickPulse
+      />
+      <div className="page">
       <header className="side">
         <Link className="sideTitle" to="/">
           <span className="sideSub">{profile.name}</span>
@@ -51,7 +79,8 @@ export function SideShell({ children }: { children: ReactNode }) {
           </a>
         </p>
       </footer>
-    </div>
+      </div>
+    </>
   );
 }
 
