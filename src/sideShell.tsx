@@ -25,9 +25,7 @@ export function SideShell({ children }: { children: ReactNode }) {
               <Link to="/about">{t.nav.about}</Link>
             </li>
             <li>
-              <Link to="/" hash="contact">
-                {t.nav.contact}
-              </Link>
+              <Link to="/contact">{t.nav.contact}</Link>
             </li>
           </ul>
           <div className="sideSocial">

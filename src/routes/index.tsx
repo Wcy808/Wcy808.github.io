@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { profile, projects, ui, type Lang } from "../content";
 import { useLang } from "../langContext";
@@ -39,17 +39,6 @@ function Portfolio() {
       {projects.map((p) => (
         <ProjectArticle key={p.id} project={p} lang={lang} />
       ))}
-
-      <SectionHead id="contact" index="02" title={t.sections.contact} />
-      <Reveal className="article prose">
-        <p>{t.contact.text}</p>
-        <div className="articleLinks">
-          <a href={profile.github} target="_blank" rel="noreferrer">
-            <GithubIcon />
-            {t.contact.button}
-          </a>
-        </div>
-      </Reveal>
     </SideShell>
   );
 }
@@ -124,15 +113,6 @@ function useReveal<T extends HTMLElement>() {
   }, []);
 
   return ref;
-}
-
-function Reveal({ children, className }: { children: ReactNode; className?: string }) {
-  const ref = useReveal<HTMLDivElement>();
-  return (
-    <div ref={ref} data-reveal className={className}>
-      {children}
-    </div>
-  );
 }
 
 function SectionHead({ id, index, title, sub }: { id: string; index: string; title: string; sub?: string }) {
