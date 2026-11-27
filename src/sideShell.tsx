@@ -39,12 +39,23 @@ export function SideShell({ children }: { children: ReactNode }) {
       if (!side || !page) return;
       if (window.matchMedia("(max-width: 1023px)").matches) {
         side.style.marginLeft = "0px";
+        document.querySelector<HTMLElement>(".sideSocial")?.style.setProperty("padding-left", "0px");
+        document.querySelector<HTMLElement>(".sideFooter")?.style.setProperty("padding-left", "0px");
         return;
       }
       const cur = parseFloat(getComputedStyle(side).marginLeft);
       const baseRel = side.getBoundingClientRect().left - page.getBoundingClientRect().left - cur;
       const targetX = Math.round((baseRel + 1) / 36) * 36 - 1;
       side.style.marginLeft = `${targetX - baseRel}px`;
+      // align icon row and footer text to the nav labels' text left edge
+      const navA = document.querySelector<HTMLElement>(".sideNav ul a");
+      if (navA) {
+        const range = document.createRange();
+        range.selectNodeContents(navA);
+        const off = range.getBoundingClientRect().left - side.getBoundingClientRect().left;
+        document.querySelector<HTMLElement>(".sideSocial")?.style.setProperty("padding-left", `${off}px`);
+        document.querySelector<HTMLElement>(".sideFooter")?.style.setProperty("padding-left", `${off}px`);
+      }
     };
     align();
     window.addEventListener("resize", align);
