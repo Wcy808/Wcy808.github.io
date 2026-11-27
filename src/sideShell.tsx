@@ -33,6 +33,18 @@ export function SideShell({ children }: { children: ReactNode }) {
         if (isHead) el.style.marginTop = `${parseFloat(style.marginTop) + target - lineY}px`;
         else el.style.paddingBottom = `${parseFloat(style.paddingBottom) + target - lineY}px`;
       });
+      // snap the side column (and the title's vertical rule) onto a vertical grid line
+      const side = document.querySelector<HTMLElement>(".side");
+      const page = document.querySelector<HTMLElement>(".page");
+      if (!side || !page) return;
+      if (window.matchMedia("(max-width: 1023px)").matches) {
+        side.style.marginLeft = "0px";
+        return;
+      }
+      const cur = parseFloat(getComputedStyle(side).marginLeft);
+      const baseRel = side.getBoundingClientRect().left - page.getBoundingClientRect().left - cur;
+      const targetX = Math.round((baseRel + 1) / 36) * 36 - 1;
+      side.style.marginLeft = `${targetX - baseRel}px`;
     };
     align();
     window.addEventListener("resize", align);
@@ -64,43 +76,44 @@ export function SideShell({ children }: { children: ReactNode }) {
           <span className="sideSub">{profile.name}</span>
           <h1>{lang === "zh" ? "个人作品集" : "Portfolio"}</h1>
         </Link>
-        <nav className="sideNav">
-          <ul>
-            <li>
-              <Link to="/" hash="projects">
-                {t.nav.projects}
-              </Link>
-            </li>
-            <li>
-              <Link to="/about">{t.nav.about}</Link>
-            </li>
-            <li>
-              <Link to="/contact">{t.nav.contact}</Link>
-            </li>
-          </ul>
-          <div className="sideSocial">
-            <a href={profile.github} target="_blank" rel="noreferrer" title="GitHub">
-              <GithubIcon />
-            </a>
-            <button type="button" className="langToggle" onClick={toggle} aria-label="Switch language">
-              {t.nav.toggle}
-            </button>
-          </div>
-        </nav>
+        <div className="sideBottom">
+          <nav className="sideNav">
+            <ul>
+              <li>
+                <Link to="/" hash="projects">
+                  {t.nav.projects}
+                </Link>
+              </li>
+              <li>
+                <Link to="/about">{t.nav.about}</Link>
+              </li>
+              <li>
+                <Link to="/contact">{t.nav.contact}</Link>
+              </li>
+            </ul>
+            <div className="sideSocial">
+              <a href={profile.github} target="_blank" rel="noreferrer" title="GitHub">
+                <GithubIcon />
+              </a>
+              <button type="button" className="langToggle" onClick={toggle} aria-label="Switch language">
+                {t.nav.toggle}
+              </button>
+            </div>
+          </nav>
+          <footer className="sideFooter">
+            <p>© 2026 {profile.name}</p>
+            <p>{t.footer.theme}</p>
+            <p>
+              {t.footer.built} ·{" "}
+              <a href="https://github.com/Wcy808/Wcy808.github.io" target="_blank" rel="noreferrer">
+                {t.footer.source}
+              </a>
+            </p>
+          </footer>
+        </div>
       </header>
 
       <main id="top">{children}</main>
-
-      <footer className="sideFooter">
-        <p>© 2026 {profile.name}</p>
-        <p>{t.footer.theme}</p>
-        <p>
-          {t.footer.built} ·{" "}
-          <a href="https://github.com/Wcy808/Wcy808.github.io" target="_blank" rel="noreferrer">
-            {t.footer.source}
-          </a>
-        </p>
-      </footer>
     </div>
   );
 }
