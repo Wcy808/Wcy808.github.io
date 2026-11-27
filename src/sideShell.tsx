@@ -20,7 +20,7 @@ export function SideShell({ children }: { children: ReactNode }) {
   const ink = dark ? "#ffffff" : "#94a3b8";
 
   return (
-    <>
+    <div className="page">
       <CursorGrid
         className="bgCursorGrid"
         cellSize={36}
@@ -32,12 +32,11 @@ export function SideShell({ children }: { children: ReactNode }) {
         holdTime={400}
         fadeDuration={800}
         fillOpacity={0.06}
-        gridOpacity={0.06}
+        gridOpacity={0.08}
         maxOpacity={0.4}
         spotlight={0.3}
         clickPulse
       />
-      <div className="page">
       <header className="side">
         <Link className="sideTitle" to="/">
           <span className="sideSub">{profile.name}</span>
@@ -80,8 +79,7 @@ export function SideShell({ children }: { children: ReactNode }) {
           </a>
         </p>
       </footer>
-      </div>
-    </>
+    </div>
   );
 }
 
