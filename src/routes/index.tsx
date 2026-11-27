@@ -1,5 +1,6 @@
+import { useEffect, useRef, type ReactNode } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { profile, projects, ui } from "../content";
+import { profile, projects, ui, type Lang } from "../content";
 import { useLang } from "../langContext";
 
 export const Route = createFileRoute("/")({
@@ -12,148 +13,181 @@ function Portfolio() {
 
   return (
     <div className="page">
-      <div className="bgGlow" aria-hidden="true" />
-
-      <header className="nav">
-        <a className="navLogo" href="#top">
-          <span className="navLogoMark">W</span>
-          {profile.name}
+      <header className="side">
+        <a className="sideTitle" href="#top">
+          <span className="sideSub">{profile.name}</span>
+          <h1>{lang === "zh" ? "个人作品集" : "Portfolio"}</h1>
         </a>
-        <nav className="navLinks">
-          <a href="#projects">{t.nav.projects}</a>
-          <a href="#about">{t.nav.about}</a>
-          <a href="#contact">{t.nav.contact}</a>
-          <button type="button" className="langToggle" onClick={toggle} aria-label="Switch language">
-            {t.nav.toggle}
-          </button>
+        <nav className="sideNav">
+          <ul>
+            <li>
+              <a href="#projects">{t.nav.projects}</a>
+            </li>
+            <li>
+              <a href="#about">{t.nav.about}</a>
+            </li>
+            <li>
+              <a href="#contact">{t.nav.contact}</a>
+            </li>
+          </ul>
+          <div className="sideSocial">
+            <a href={profile.github} target="_blank" rel="noreferrer" title="GitHub">
+              <GithubIcon />
+            </a>
+            <button type="button" className="langToggle" onClick={toggle} aria-label="Switch language">
+              {t.nav.toggle}
+            </button>
+          </div>
         </nav>
       </header>
 
       <main id="top">
-        <section className="hero">
-          <img className="heroAvatar" src={profile.avatar} alt={profile.name} width={112} height={112} />
-          <p className="heroRole">{t.hero.role}</p>
-          <h1 className="heroTitle">
-            {profile.name}
-            <span className="heroTagline">{t.hero.tagline}</span>
-          </h1>
-          <p className="heroIntro">{t.hero.intro}</p>
+        <article className="article">
+          <div className="heroHead">
+            <img className="heroAvatar" src={profile.avatar} alt={profile.name} width={56} height={56} />
+            <h2 className="postTitle heroName">{profile.name}</h2>
+          </div>
+          <div className="meta">
+            <span>{t.hero.role}</span>
+          </div>
+          <div className="prose">
+            <p className="heroTagline">{t.hero.tagline}</p>
+            <p>{t.hero.intro}</p>
+          </div>
           <div className="heroCta">
-            <a className="btnPrimary" href="#projects">
-              {t.hero.ctaProjects}
-            </a>
-            <a className="btnGhost" href={profile.github} target="_blank" rel="noreferrer">
+            <a href="#projects">{t.hero.ctaProjects} ↓</a>
+            <a href={profile.github} target="_blank" rel="noreferrer">
               <GithubIcon />
-              {t.hero.ctaGithub}
+              {t.hero.ctaGithub} ↗
             </a>
           </div>
-        </section>
+        </article>
 
-        <section className="section" id="projects">
-          <SectionTitle index="01" title={t.sections.projects} sub={t.sections.projectsSub} />
-          <div className="projectGrid">
-            {projects.map((p) => {
-              const c = p[lang];
-              return (
-                <article className="projectCard" key={p.id}>
-                  <div className="projectHead">
-                    <h3 className="projectName">{c.name}</h3>
-                    {p.stars && (
-                      <span className="projectStars" title={`${p.stars} ${t.project.stars}`}>
-                        ★ {p.stars}
-                      </span>
-                    )}
-                  </div>
-                  <p className="projectTagline">{c.tagline}</p>
-                  <p className="projectDesc">{c.desc}</p>
-                  {"pipeline" in c && (
-                    <ol className="pipeline">
-                      {c.pipeline.map((step, i) => (
-                        <li key={step}>
-                          <span className="pipelineStep">{step}</span>
-                          {i < c.pipeline.length - 1 && <span className="pipelineArrow">→</span>}
-                        </li>
-                      ))}
-                    </ol>
-                  )}
-                  <ul className="projectHighlights">
-                    {c.highlights.map((h) => (
-                      <li key={h}>{h}</li>
-                    ))}
-                  </ul>
-                  <div className="projectTags">
-                    {p.tags.map((tag) => (
-                      <span className="tag" key={tag}>
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="projectLinks">
-                    <a href={p.github} target="_blank" rel="noreferrer">
-                      <GithubIcon />
-                      {t.project.github}
-                    </a>
-                    {p.site && (
-                      <a href={p.site} target="_blank" rel="noreferrer">
-                        {t.project.site} ↗
-                      </a>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
+        <SectionHead index="01" title={t.sections.projects} sub={t.sections.projectsSub} />
+        {projects.map((p) => (
+          <ProjectArticle key={p.id} project={p} lang={lang} />
+        ))}
 
-        <section className="section" id="about">
-          <SectionTitle index="02" title={t.sections.about} />
-          <div className="aboutGrid">
-            <div className="aboutText">
-              <p>{t.about.p1}</p>
-              <p>{t.about.p2}</p>
+        <SectionHead index="02" title={t.sections.about} />
+        <Reveal className="article prose">
+          <p>{t.about.p1}</p>
+          <p>{t.about.p2}</p>
+          {t.skillGroups.map((g) => (
+            <div className="skillGroup" key={g.label}>
+              <span className="skillLabel">{g.label}</span>
+              <span className="skillItems">{g.items.join(" / ")}</span>
             </div>
-            <div className="skillPanel">
-              <h3 className="skillTitle">{t.sections.skills}</h3>
-              {t.skillGroups.map((g) => (
-                <div className="skillGroup" key={g.label}>
-                  <span className="skillLabel">{g.label}</span>
-                  <div className="skillItems">
-                    {g.items.map((item) => (
-                      <span className="tag" key={item}>
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+          ))}
+        </Reveal>
 
-        <section className="section contact" id="contact">
-          <SectionTitle index="03" title={t.sections.contact} />
-          <p className="contactText">{t.contact.text}</p>
-          <a className="btnPrimary" href={profile.github} target="_blank" rel="noreferrer">
-            <GithubIcon />
-            {t.contact.button}
-          </a>
-        </section>
+        <SectionHead index="03" title={t.sections.contact} />
+        <Reveal className="article prose">
+          <p>{t.contact.text}</p>
+          <div className="articleLinks">
+            <a href={profile.github} target="_blank" rel="noreferrer">
+              <GithubIcon />
+              {t.contact.button}
+            </a>
+          </div>
+        </Reveal>
       </main>
 
-      <footer className="footer">
-        <span>© 2026 {profile.name}</span>
-        <span className="footerDot">·</span>
-        <span>{t.footer.built}</span>
-        <span className="footerDot">·</span>
-        <a href="https://github.com/Wcy808/Wcy808.github.io" target="_blank" rel="noreferrer">
-          {t.footer.source}
-        </a>
+      <footer className="sideFooter">
+        <p>© 2026 {profile.name}</p>
+        <p>{t.footer.theme}</p>
+        <p>
+          {t.footer.built} ·{" "}
+          <a href="https://github.com/Wcy808/Wcy808.github.io" target="_blank" rel="noreferrer">
+            {t.footer.source}
+          </a>
+        </p>
       </footer>
     </div>
   );
 }
 
-function SectionTitle({ index, title, sub }: { index: string; title: string; sub?: string }) {
+function ProjectArticle({ project, lang }: { project: (typeof projects)[number]; lang: Lang }) {
+  const ref = useReveal<HTMLElement>();
+  const t = ui[lang];
+  const c = project[lang];
+
+  return (
+    <article ref={ref} data-reveal className="article">
+      <h3 className="postTitle">
+        <a href={project.github} target="_blank" rel="noreferrer">
+          {c.name}
+        </a>
+      </h3>
+      <div className="meta">
+        <span>{c.tagline}</span>
+        {project.stars && <span>★ {project.stars}</span>}
+        <span>{project.tags.join(" / ")}</span>
+      </div>
+      <div className="prose">
+        <p>{c.desc}</p>
+        {"pipeline" in c && (
+          <p className="pipeline">
+            {c.pipeline.map((step, i) => (
+              <span key={step}>
+                {step}
+                {i < c.pipeline.length - 1 && <span className="pipelineArrow">→</span>}
+              </span>
+            ))}
+          </p>
+        )}
+        <ul>
+          {c.highlights.map((h) => (
+            <li key={h}>{h}</li>
+          ))}
+        </ul>
+      </div>
+      <div className="articleLinks">
+        <a href={project.github} target="_blank" rel="noreferrer">
+          <GithubIcon />
+          {t.project.github}
+        </a>
+        {project.site && (
+          <a href={project.site} target="_blank" rel="noreferrer">
+            {t.project.site} ↗
+          </a>
+        )}
+      </div>
+    </article>
+  );
+}
+
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("inView");
+          io.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return ref;
+}
+
+function Reveal({ children, className }: { children: ReactNode; className?: string }) {
+  const ref = useReveal<HTMLDivElement>();
+  return (
+    <div ref={ref} data-reveal className={className}>
+      {children}
+    </div>
+  );
+}
+
+function SectionHead({ index, title, sub }: { index: string; title: string; sub?: string }) {
   return (
     <div className="sectionHead">
       <span className="sectionIndex">{index}</span>

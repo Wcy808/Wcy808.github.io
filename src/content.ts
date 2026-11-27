@@ -101,7 +101,11 @@ export const ui = {
       text: "对项目感兴趣、想交流技术或一起合作？欢迎在 GitHub 上找到我。",
       button: "GitHub @Wcy808",
     },
-    footer: { built: "使用 TanStack Start 构建", source: "本站源码" },
+    footer: {
+      built: "使用 TanStack Start 构建",
+      source: "本站源码",
+      theme: "视觉参考 Typography",
+    },
   },
   en: {
     nav: { projects: "Projects", about: "About", contact: "Contact", toggle: "中" },
@@ -134,6 +138,10 @@ export const ui = {
       text: "Interested in these projects, want to talk tech or collaborate? Find me on GitHub.",
       button: "GitHub @Wcy808",
     },
-    footer: { built: "Built with TanStack Start", source: "Site source" },
+    footer: {
+      built: "Built with TanStack Start",
+      source: "Site source",
+      theme: "Type inspired by Typography",
+    },
   },
 };
